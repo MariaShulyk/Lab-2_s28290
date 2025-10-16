@@ -29,6 +29,24 @@ jobs:
       - name: Generate CSV
         run: |
           python3 scripts/generator_danych.py -s ${STUDENT_NUMBER}
+          
+      - name: List worksheet titles
+        env:
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+          GOOGLE_SA_JSON: ${{ secrets.GOOGLE_SA_JSON }}
+        run: |
+         python - <<'PY'
+         import os, json, gspread
+         from google.oauth2.service_account import Credentials
+         info = json.loads(os.environ["GOOGLE_SA_JSON"])
+         creds = Credentials.from_service_account_info(info, scopes=[
+             "https://www.googleapis.com/auth/spreadsheets",
+             "https://www.googleapis.com/auth/drive",
+         ])
+         gc = gspread.authorize(creds)
+         sh = gc.open_by_key(os.environ["SHEET_ID"])
+         print("Worksheets:", [ws.title for ws in sh.worksheets()])
+         PY
 
       - name: Clean, standardize, report, log
         run: |
