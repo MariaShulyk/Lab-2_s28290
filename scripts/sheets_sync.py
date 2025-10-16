@@ -17,21 +17,30 @@ def _get_client():
     ]
     info = json.loads(sa_json)
     creds = Credentials.from_service_account_info(info, scopes=scopes)
-
     return gspread.authorize(creds)
 
 def upload_csv(sheet_id: str, csv_path: str, worksheet: str = "data"):
+    import gspread
     gc = _get_client()
     sh = gc.open_by_key(sheet_id)
 
     try:
         ws = sh.worksheet(worksheet)
-    except Exception:
+    except gspread.exceptions.WorksheetNotFound:
         ws = sh.add_worksheet(title=worksheet, rows=2000, cols=50)
 
     df = pd.read_csv(csv_path)
+
+    # ---- KLUCZOWE: usuń NaN/Inf, bo API nie akceptuje takich wartości w JSON ----
+    df = df.replace([float("inf"), float("-inf")], pd.NA)  # Inf -> NA
+    df = df.replace([pd.NA, None], "")                     # NA/None -> ""
+    df = df.fillna("")                                     # NaN -> ""
+
+    # Jeżeli masz typy mieszane, zostawiamy jako "object" (listy list)
+    values = [df.columns.tolist()] + df.astype(object).values.tolist()
+
     ws.clear()
-    ws.update([df.columns.tolist()] + df.values.tolist())
+    ws.update(values)
     print(f"Uploaded {csv_path} -> {worksheet} ({df.shape[0]} rows, {df.shape[1]} cols)")
 
 def download_csv(sheet_id: str, out_path: str = "sheet_data.csv", worksheet: str = "data"):
