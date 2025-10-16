@@ -48,9 +48,18 @@ jobs:
          print("Worksheets:", [ws.title for ws in sh.worksheets()])
          PY
 
-      - name: Clean, standardize, report, log
+      - name: Upload to Google Sheets
         run: |
-          python3 scripts/main.py --source sheets --sheet-id "${{ secrets.SHEET_ID }}" --worksheet "data" --out "cleaned_data.csv" --report "report.txt"
+          GEN_CSV=$(ls -1 data_student_*.csv | tail -n 1)
+          python3 scripts/sheets_sync.py --mode upload --sheet-id "${SHEET_ID}" --worksheet "data" --csv "$GEN_CSV"
+
+      - name: Download from Google Sheets
+        run: |
+          python3 scripts/sheets_sync.py --mode download --sheet-id "${SHEET_ID}" --worksheet "data" --out "sheet_data.csv"
+
+      - name: Clean, standardize, report, log (reads from Sheets)
+        run: |
+          python3 scripts/main.py --source sheets --sheet-id "${SHEET_ID}" --worksheet "data" --out "cleaned_data.csv" --report "report.txt"
 
       - name: Show report in logs
         run: |
