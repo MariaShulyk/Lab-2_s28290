@@ -1,0 +1,65 @@
+name: Lab2 - Data Processing
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  lab2:
+    runs-on: ubuntu-latest
+    env:
+      SHEET_ID: ${{ secrets.SHEET_ID }}
+      GOOGLE_SA_JSON: ${{ secrets.GOOGLE_SA_JSON }}
+      STUDENT_NUMBER: ${{ secrets.STUDENT_NUMBER }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate CSV
+        run: |
+          python3 generator_danych.py -s ${STUDENT_NUMBER}
+
+      - name: Upload to Google Sheets
+        run: |
+          GEN_CSV=$(ls -1 data_student_*.csv | tail -n 1)
+          python3 scripts/sheets_sync.py --mode upload --sheet-id "${SHEET_ID}" --csv "$GEN_CSV" --worksheet "data"
+
+      - name: Download from Google Sheets
+        run: |
+          python3 scripts/sheets_sync.py --mode download --sheet-id "${SHEET_ID}" --worksheet "data" --out "sheet_data.csv"
+
+      - name: Clean, standardize, report, log
+        run: |
+          python3 scripts/clean_standard.py --source sheets --sheet-id "${{ secrets.SHEET_ID }}" --worksheet "data" --out "cleaned_data.csv" --report "report.txt"
+
+      - name: Show report in logs
+        run: |
+          echo "     report.txt     "
+          cat report.txt
+          echo "                    "
+
+      - name: Show last 50 lines of log.txt
+        run: |
+          echo "   log.txt (tail)   "
+          tail -n 50 log.txt
+          echo "                    "    
+
+      - name: Upload artifacts (report, logs, cleaned csv)
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab2-outputs
+          path: |
+            report.txt
+            log.txt
+            cleaned_data.csv

@@ -1,0 +1,4 @@
+Original rows: 1000, columns: 7
+Total cells: 7000
+Rows dropped: 85 (8.50%)
+Cells changed (imputed + standardized): 1896 (27.09%)

@@ -1,0 +1,40 @@
+2025-10-16 22:50:58,691 | INFO | clean_standard | Reading data from CSV: data_student_28290.csv
+2025-10-16 22:50:58,694 | INFO | clean_standard | Loaded DataFrame from CSV with shape (1000, 7)
+2025-10-16 22:50:58,694 | INFO | clean_standard | === Start cleaning & standardization ===
+2025-10-16 22:50:58,694 | INFO | clean_standard | Original shape: rows=1000, cols=7 (total cells=7000)
+2025-10-16 22:50:58,701 | INFO | clean_standard | Rows to drop: 85 (invalid_duration=66, too_many_nans=19)
+2025-10-16 22:50:58,710 | INFO | clean_standard | Imputed cells: 66
+2025-10-16 22:50:58,711 | INFO | clean_standard | Standardized numeric columns ['Wiek', 'Średnie Zarobki']; changed cells by std: 1830
+2025-10-16 22:50:58,711 | INFO | clean_standard | Original rows: 1000, columns: 7
+2025-10-16 22:50:58,711 | INFO | clean_standard | Total cells: 7000
+2025-10-16 22:50:58,711 | INFO | clean_standard | Rows dropped: 85 (8.50%)
+2025-10-16 22:50:58,711 | INFO | clean_standard | Cells changed (imputed + standardized): 1896 (27.09%)
+2025-10-16 22:50:58,712 | INFO | clean_standard | === Cleaning & standardization finished ===
+2025-10-16 22:50:58,714 | INFO | clean_standard | Saved cleaned data to 'cleaned_data.csv'
+2025-10-16 22:50:58,714 | INFO | clean_standard | Wrote report to 'report.txt'
+2025-10-16 22:50:58,714 | INFO | clean_standard | Report summary: 
+Original rows: 1000, columns: 7
+Total cells: 7000
+Rows dropped: 85 (8.50%)
+Cells changed (imputed + standardized): 1896 (27.09%)
+ 
+2025-10-16 22:53:05,114 | INFO | clean_standard | Reading data from CSV: data_student_28290.csv
+2025-10-16 22:53:05,117 | INFO | clean_standard | Loaded DataFrame from CSV with shape (1000, 7)
+2025-10-16 22:53:05,117 | INFO | clean_standard | === Start cleaning & standardization ===
+2025-10-16 22:53:05,117 | INFO | clean_standard | Original shape: rows=1000, cols=7 (total cells=7000)
+2025-10-16 22:53:05,124 | INFO | clean_standard | Rows to drop: 85 (invalid_duration=66, too_many_nans=19)
+2025-10-16 22:53:05,133 | INFO | clean_standard | Imputed cells: 66
+2025-10-16 22:53:05,133 | INFO | clean_standard | Standardized numeric columns ['Wiek', 'Średnie Zarobki']; changed cells by std: 1830
+2025-10-16 22:53:05,133 | INFO | clean_standard | Original rows: 1000, columns: 7
+2025-10-16 22:53:05,133 | INFO | clean_standard | Total cells: 7000
+2025-10-16 22:53:05,133 | INFO | clean_standard | Rows dropped: 85 (8.50%)
+2025-10-16 22:53:05,133 | INFO | clean_standard | Cells changed (imputed + standardized): 1896 (27.09%)
+2025-10-16 22:53:05,134 | INFO | clean_standard | Cleaning & standardization finished
+2025-10-16 22:53:05,137 | INFO | clean_standard | Saved cleaned data to 'cleaned_data.csv'
+2025-10-16 22:53:05,137 | INFO | clean_standard | Wrote report to 'report.txt'
+2025-10-16 22:53:05,137 | INFO | clean_standard | Report summary: 
+Original rows: 1000, columns: 7
+Total cells: 7000
+Rows dropped: 85 (8.50%)
+Cells changed (imputed + standardized): 1896 (27.09%)
+ 
