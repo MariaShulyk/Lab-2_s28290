@@ -28,20 +28,11 @@ jobs:
 
       - name: Generate CSV
         run: |
-          python3 generator_danych.py -s ${STUDENT_NUMBER}
-
-      - name: Upload to Google Sheets
-        run: |
-          GEN_CSV=$(ls -1 data_student_*.csv | tail -n 1)
-          python3 scripts/sheets_sync.py --mode upload --sheet-id "${SHEET_ID}" --csv "$GEN_CSV" --worksheet "data"
-
-      - name: Download from Google Sheets
-        run: |
-          python3 scripts/sheets_sync.py --mode download --sheet-id "${SHEET_ID}" --worksheet "data" --out "sheet_data.csv"
+          python3 scripts/generator_danych.py -s ${STUDENT_NUMBER}
 
       - name: Clean, standardize, report, log
         run: |
-          python3 scripts/clean_standard.py --source sheets --sheet-id "${{ secrets.SHEET_ID }}" --worksheet "data" --out "cleaned_data.csv" --report "report.txt"
+          python3 scripts/main.py --source sheets --sheet-id "${{ secrets.SHEET_ID }}" --worksheet "data" --out "cleaned_data.csv" --report "report.txt"
 
       - name: Show report in logs
         run: |
